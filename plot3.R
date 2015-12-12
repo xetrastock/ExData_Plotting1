@@ -1,0 +1,12 @@
+download.file("https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip","./Data/H.zip")
+unzip("./Data/H.zip",exdir="./Data")
+bob <- read.table("./Data/household_power_consumption.txt",sep=";",header=TRUE)
+bob <- bob[bob$Date=="1/2/2007"|bob$Date=="2/2/2007",]
+bob[,3:9] = apply(bob[,3:9],2,function(x) as.numeric(as.character(x)))
+bob$Time <- strptime(paste(bob$Date,bob$Time),"%d/%m/%Y %H:%M:%S")
+png("plot3.png")
+plot(bob$Time,bob$Sub_metering_1,type="l",ylab="Energy sub metering",xlab="")
+lines(bob$Time,bob$Sub_metering_2,col="red")
+lines(bob$Time,bob$Sub_metering_3,col="blue")
+legend("topright",c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),lty=c(1,1,1),col=c("black","red","blue"))
+dev.off()
